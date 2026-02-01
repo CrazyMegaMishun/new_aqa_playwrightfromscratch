@@ -1,9 +1,17 @@
 import { test, expect } from '@playwright/test';
 
+test.beforeAll(async ({}) => {
+  console.log('Checking before all hook...');
+});
+
 test.beforeEach(async ({ page }) => {
   console.log('Starting test: ProductHoverPurchase.spec.ts');
     await page.goto('/index.php?route=common/home');
     await expect(page).toHaveURL('https://ecommerce-playground.lambdatest.io/index.php?route=common/home');
+});
+
+test.afterEach(() => {
+  console.log('Checking after each hook...');
 });
 
 test.afterAll(() => {
