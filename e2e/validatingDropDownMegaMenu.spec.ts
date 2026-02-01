@@ -1,13 +1,13 @@
 import { test, expect } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
-  console.log('Starting test: validatingDropDownMegaMenu.spec.ts');
+    //console.log('Starting test: validatingDropDownMegaMenu.spec.ts');
     await page.goto('/index.php?route=common/home');
     await expect(page).toHaveURL('https://ecommerce-playground.lambdatest.io/index.php?route=common/home');
 });
 
 test.afterAll(() => {
-  console.log('Finished test: validatingDropDownMegaMenu.spec.ts');
+    //console.log('Finished test: validatingDropDownMegaMenu.spec.ts');
 });
 
 test('Validating Drop Down Mega Menu', async ({ page }) => {

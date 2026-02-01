@@ -1,13 +1,13 @@
 import { test, expect } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
-  console.log('Starting test: testWrongLogin.spec.ts');
+    //console.log('Starting test: testWrongLogin.spec.ts');
     await page.goto('/index.php?route=common/home');
     await expect(page).toHaveURL('https://ecommerce-playground.lambdatest.io/index.php?route=common/home');
 });
 
 test.afterAll(() => {
-  console.log('Finished test: testWrongLogin.spec.ts');
+    //console.log('Finished test: testWrongLogin.spec.ts');
 });
 
 test('Checking Error with Wrong Credentials', async ({ page }) => {
