@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('Checking adding product to favorites without login', async ({ page }) => {
+test('Adding product to favorites without login', async ({ page }) => {
   
     await test.step('Step 1: Navigate to Ecommerce Playground Home Page', async () => {
         await page.goto('/index.php?route=common/home');
