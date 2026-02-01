@@ -4,6 +4,8 @@
 node_modules/
 /test-results/
 /playwright-report/
+/screenshots/
+/videos/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
