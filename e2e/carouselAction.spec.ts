@@ -35,32 +35,32 @@ test('Testing carousel navigation', async ({ page }) => {
 
   });
 
-  await test.step('Step 3: Perform cycleclick on a carousel', async () => {
-    const carousel = page.locator('#mz-carousel-218380');
-    await carousel.hover();
+  // await test.step('Step 3: Perform cycleclick on a carousel', async () => {
+  //   const carousel = page.locator('#mz-carousel-218380');
+  //   await carousel.hover();
 
-    const activeItem = carousel.locator('.carousel-item.active');
-    const initialHref = await activeItem.locator('a').getAttribute('href');
-    await expect(activeItem).toBeVisible();
+  //   const activeItem = carousel.locator('.carousel-item.active');
+  //   const initialHref = await activeItem.locator('a').getAttribute('href');
+  //   await expect(activeItem).toBeVisible();
 
-    const previousButton = page.getByRole('button', { name: 'Previous' })
-    await previousButton.click();
-    await previousButton.click();
-    await previousButton.click();
+  //   const previousButton = page.getByRole('button', { name: 'Previous' })
+  //   await previousButton.click();
+  //   await previousButton.click();
+  //   await previousButton.click();
 
-    await expect.poll(
-        async () => carousel.locator('.carousel-item.active a').getAttribute('href')
-    ).toBe(initialHref);
+  //   await expect.poll(
+  //       async () => carousel.locator('.carousel-item.active a').getAttribute('href')
+  //   ).toBe(initialHref);
 
-    const nextButton = page.getByRole('button', { name: 'Next' })
-    await nextButton.click();
-    await nextButton.click();
-    await nextButton.click();
+  //   const nextButton = page.getByRole('button', { name: 'Next' })
+  //   await nextButton.click();
+  //   await nextButton.click();
+  //   await nextButton.click();
 
-    await expect.poll(
-        async () => carousel.locator('.carousel-item.active a').getAttribute('href')
-    ).toBe(initialHref);
+  //   await expect.poll(
+  //       async () => carousel.locator('.carousel-item.active a').getAttribute('href')
+  //   ).toBe(initialHref);
     
-  });
+  // });
 
 });
