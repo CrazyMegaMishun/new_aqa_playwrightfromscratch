@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 
-test('Adding product to favorites without login', async ({ page }) => {
+test('Adding product to favorites without login @func', async ({ page }) => {
   
     await test.step('Step 1: Navigate to Ecommerce Playground Home Page', async () => {
-        await page.goto('/index.php?route=common/home');
-        await expect(page).toHaveURL('https://ecommerce-playground.lambdatest.io/index.php?route=common/home');
+        await page.goto('/');
+        await expect(page).toHaveURL('https://ecommerce-playground.lambdatest.io/');
         await page.screenshot({ path: 'screenshots/step1-homepage.png' });
     });
     

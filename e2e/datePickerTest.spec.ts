@@ -1,59 +1,57 @@
 import { test, expect } from '@playwright/test';
+import { DatePickerPage } from '../jquerryTestPoligonPages/datePickerPage';
 
 test('Testing datepicking in all range datepicker', async ({ page }) => {
   
+  const datePickerPage = new DatePickerPage(page);
+
   await test.step('Step 1: Go to droppable ui webpage', async () => {
     await page.goto('https://jqueryui.com/datepicker/');
     await expect(page).toHaveURL('https://jqueryui.com/datepicker/');
   });
 
-  await test.step('Step 2: Identify the date picker element and pick a date of this month', async () => {
-    // The datepicker is inside an iframe, so we need to switch to it first
-    const iFrame = page.frameLocator(' [class="demo-frame"] ' );
-    
-    // Now we can locate the date field and interact with it
-    const dateField = iFrame.locator('#datepicker');
-    await expect(dateField).toBeVisible();
-    await dateField.click();
-
-    // After clicking the date field, the date picker should appear. We can verify that it is visible.
-    const datePicker = iFrame.locator('#ui-datepicker-div');
-    await expect(datePicker).toBeVisible();
-
-    // Now we can select a specific date. For example, let's select the 15th of the current month.
-    const dayOfThisMonth = datePicker.locator('a', { hasText: '15' });
-    await dayOfThisMonth.click();
-
-
-    // After selecting the date, we can verify that the date field has been updated with the selected date.
-    const selectedDate = await dateField.inputValue();
-    const currentDate = new Date();
-    const expectedDate = `0${currentDate.getMonth() + 1}/15/${currentDate.getFullYear()}`;
-    await expect(selectedDate).toBe(expectedDate);
-
+  await test.step('Step 2: Pick a date of this month', async () => {
+    await datePickerPage.clickDateField();
+    await datePickerPage.selectFirstDate('15');
   });
 
-  await test.step('Step 3: Identify the date picker element and pick a date of previous month', async () => {
-    const iFrame = page.frameLocator(' [class="demo-frame"] ' );
-    
-    const dateField = iFrame.locator('#datepicker');
-    await expect(dateField).toBeVisible();
-    await dateField.click();
-
-    const datePicker = iFrame.locator('#ui-datepicker-div');
-    await expect(datePicker).toBeVisible();
-
-    const previousMonthButton = datePicker.locator('.ui-datepicker-prev');
-    await previousMonthButton.click();
-
-    const dayOfPreviousMonth = datePicker.locator('a', { hasText: '15' });
-    await dayOfPreviousMonth.click();
-
-    const selectedDate = await dateField.inputValue();
-    const currentDate = new Date();
-    const expectedDate = `0${currentDate.getMonth()}/15/${currentDate.getFullYear()}`;
-    await expect(selectedDate).toBe(expectedDate);
-
+  await test.step('Step 3: Pick a date of previous month', async () => {
+    await datePickerPage.clickDateField();
+    await datePickerPage.clickPreviousMonth();
+    await datePickerPage.selectFirstDate('15');
   });
+
+  await test.step('Step 4: Pick a date of next month', async () => {
+    await datePickerPage.clickDateField();
+    await datePickerPage.clickNextMonth();
+    await datePickerPage.selectFirstDate('15');
+  });
+
+  await test.step('Step 5: Switch to Animated calendar', async () => {
+    await datePickerPage.clickWithAnimation();
+    //написать тесты на верификацию анимаци
+  });
+
+  await test.step('Step 6: Switch to Other months calendar', async () => {
+    await datePickerPage.clickOtherMonths();
+    //написать тесты на верификацию отображения дней других месяцев - верифайнуть что там есьт дни других месяцев и они недоступны на клик
+  });
+
+  await test.step('Step 7: Switch to Week of Year calendar', async () => {
+    await datePickerPage.clickWeekOfYear();
+  });
+
+  await test.step('Step 8: Switch to Non-strict date range calendar', async () => {  
+    await datePickerPage.clickdateRangeNonStrict();
+    await datePickerPage.clickRangeFrom();
+    await datePickerPage.selectFirstDate('15');
+    await datePickerPage.clickRangeTo();
+    await datePickerPage.selectSecondDate('20');
+    //дописать валидацию на кореектный показ месяцев
+  });
+
+  await test.step('Step 9: ', async () => {
+    //написать тест на попытку выбрать не правильный ренж - от будущего к прошлому и верифицировать что это не работает
+   });
 
 });
