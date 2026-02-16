@@ -1,4 +1,4 @@
-import { Locator, Page, FrameLocator } from '@playwright/test';
+import { Locator, Page, FrameLocator, expect } from '@playwright/test';
 
 export class DatePickerPage {
     readonly iFrame: FrameLocator;
@@ -22,6 +22,8 @@ export class DatePickerPage {
     readonly weekOfYear: Locator;
     readonly rangeFrom: Locator;
     readonly rangeTo: Locator;
+    readonly monthDropdown: Locator;
+    readonly yearDropdown: Locator;
     page: Page;
 
     constructor(page: Page) {
@@ -48,11 +50,62 @@ export class DatePickerPage {
         this.weekOfYear = this.page.getByRole('link', { name: 'Show week of the year' });
         this.rangeTo = this.iFrame.getByRole('textbox', { name: 'To' });
         this.rangeFrom = this.iFrame.getByRole('textbox', { name: 'From' });
+        this.monthDropdown = this.iFrame.locator('.ui-datepicker-month');
+        this.yearDropdown = this.iFrame.locator('.ui-datepicker-year');
 
+    }
+
+    async openDatePickerWithOtherDays() {
+        for (let i = 0; i<12; i++){
+            if (!await this.checkMonthHasOtherDays()) {
+                await this.clickNextMonth()
+            } else break
+        }
     }
 
     getDayLocator(day: string): Locator {
         return this.datePicker.locator('a', { hasText: day });
+    }
+
+    getOtherMonthDay(): Locator {
+        return this.datePicker
+            .locator('.ui-datepicker-other-month')
+            .first()
+    }
+
+    async getCurrentDate(): Promise<string | null> {
+        return await this.dateField.inputValue()
+    }
+
+    async getTodayMonthNumber():Promise<string | null>{
+        return await this.datePicker
+            .locator('.ui-datepicker-today')
+            .getAttribute('data-month')
+    }
+
+    async getTodayDayNumber():Promise<string | null>{
+        return await this.datePicker
+            .locator('.ui-datepicker-today')
+            .locator('a')
+            .getAttribute('data-date')
+    }
+
+    async getTodayYearNumber():Promise<string | null>{
+        return await this.datePicker
+            .locator('.ui-datepicker-today')
+            .getAttribute('data-year')
+    }
+
+    async checkMonthHasOtherDays (): Promise<Boolean> {
+        return (await this.datePicker.locator('.ui-datepicker-other-month').count()) > 0;
+    }
+
+    async getCurrentMonth(): Promise<string> {
+        const currMonth = await this.datePicker
+            .locator('.ui-datepicker-month')
+            .textContent()
+        
+            return currMonth?.trim() || '';
     }
 
     async clickRangeTo() {
@@ -137,6 +190,57 @@ export class DatePickerPage {
 
     async selectSecondDate(day: string) {
         await this.getDayLocator(day).nth(1).click();
+    }
+
+    async selectOtherMonthDay() {
+        await this.getOtherMonthDay().click( {force: true} )
+    }
+
+    async expectDateValue(value: string) {
+        await expect(this.dateField).toHaveValue(value);
+    }
+
+    async expectMonth(month: string) {
+        await expect(this.datePicker).toContainText(month);
+    }
+
+    async expectDateFieldAreTheSame() {
+        await expect(this.rangeTo).toHaveValue(await this.rangeFrom.inputValue())
+    }
+
+    async expectFirstDateFieldEmpty() {
+        await expect(this.rangeFrom).toBeEmpty()
+    }
+
+    async fillDateField(data: string) {
+        this.dateField.focus()
+        this.dateField.fill(data)
+    }
+
+    async fillFirstDateField(data: string) {
+        this.rangeFrom.focus()
+        this.rangeFrom.fill(data)
+    }
+
+    async fillSecondDateField(data: string) {
+        this.rangeTo.focus()
+        this.rangeTo.fill(data)
+    }
+
+    async expectDateFieldIsEmpry(){
+        await expect(this.dateField).toBeEmpty()
+    }
+
+    async expectDateFieldHasData(data: string) {
+        await expect(this.dateField).toHaveValue(data)
+    }
+
+    async selectMonth(data: string){
+        await this.monthDropdown.selectOption({ label: data });
+    }
+
+    async selectYear(data: string){
+        await this.yearDropdown.selectOption({ label: data });
     }
 
 }
