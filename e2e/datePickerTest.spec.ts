@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { DatePickerPage } from '../jquerryTestPoligonPages/datePickerPage';
 
-test('Testing datepicking in all range datepicker', async ({ page }) => {
+test('Testing datepicking in all range datepicker @jqueryui', async ({ page }) => {
   
   const datePickerPage = new DatePickerPage(page);
 
@@ -35,7 +35,7 @@ test('Testing datepicking in all range datepicker', async ({ page }) => {
 
   await test.step('Step 6: Switch to Animated calendar', async () => {
     await datePickerPage.clickWithAnimation();
-    //написать тесты на верификацию анимаци
+    //написать тесты на верификацию анимации
   });
 
   await test.step('Step 7: Switch to Other months calendar', async () => {

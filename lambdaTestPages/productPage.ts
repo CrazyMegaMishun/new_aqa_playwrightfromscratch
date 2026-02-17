@@ -1,0 +1,35 @@
+import { Locator, Page, expect } from "@playwright/test";
+
+export class ProductPage {
+    page: Page;
+
+    constructor(page: Page) {
+        this.page = page;
+    }
+
+    getProductLink(productName: string): Locator {
+        return this.page.getByRole('link', { name: productName }).first();
+    }
+
+    getProductCard(productName: string): Locator {
+        return this.page
+            .locator('.product-thumb')
+            .filter({ has: this.getProductLink(productName) });
+    }
+
+    getWishListButton(productName: string): Locator {
+        return this.getProductCard(productName)
+            .locator('button[title="Add to Wish List"]');
+    }
+
+    async hoverProduct(productName: string) {
+        const link = this.getProductLink(productName);
+        await link.hover();
+    }
+
+    async addToWishList(productName: string) {
+        await this.hoverProduct(productName);
+        const btn = this.getWishListButton(productName);
+        await btn.click({ force: true });
+    }
+}
