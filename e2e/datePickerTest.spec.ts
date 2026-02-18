@@ -1,59 +1,91 @@
 import { test, expect } from '@playwright/test';
+import { DatePickerPage } from '../jquerryTestPoligonPages/datePickerPage';
 
-test('Testing datepicking in all range datepicker', async ({ page }) => {
+test('Testing datepicking in all range datepicker @jqueryui', async ({ page }) => {
   
-  await test.step('Step 1: Go to droppable ui webpage', async () => {
+  const datePickerPage = new DatePickerPage(page);
+
+  await test.step('Step 1: Go to datepicker ui webpage', async () => {
     await page.goto('https://jqueryui.com/datepicker/');
     await expect(page).toHaveURL('https://jqueryui.com/datepicker/');
   });
 
-  await test.step('Step 2: Identify the date picker element and pick a date of this month', async () => {
-    // The datepicker is inside an iframe, so we need to switch to it first
-    const iFrame = page.frameLocator(' [class="demo-frame"] ' );
-    
-    // Now we can locate the date field and interact with it
-    const dateField = iFrame.locator('#datepicker');
-    await expect(dateField).toBeVisible();
-    await dateField.click();
+  await test.step('Step 2: Pick a date of this month', async () => {
+    await datePickerPage.clickDateField();
+    await datePickerPage.selectFirstDate('15');
+  });
 
-    // After clicking the date field, the date picker should appear. We can verify that it is visible.
-    const datePicker = iFrame.locator('#ui-datepicker-div');
-    await expect(datePicker).toBeVisible();
+  await test.step('Step 3: Pick a date of previous month', async () => {
+    await datePickerPage.clickDateField();
+    await datePickerPage.clickPreviousMonth();
+    await datePickerPage.selectFirstDate('15');
+  });
 
-    // Now we can select a specific date. For example, let's select the 15th of the current month.
-    const dayOfThisMonth = datePicker.locator('a', { hasText: '15' });
-    await dayOfThisMonth.click();
+  await test.step('Step 4: Pick a date of next month', async () => {
+    await datePickerPage.clickDateField();
+    await datePickerPage.clickNextMonth();
+    await datePickerPage.selectFirstDate('15');
+  });
 
+  await test.step('Step 5: Check date fill function after choosing the date manualy', async () => {
+   
+    await datePickerPage.fillDateField('04/16/2024')
+    await datePickerPage.expectDateFieldHasData('04/16/2024')
+  })
 
-    // After selecting the date, we can verify that the date field has been updated with the selected date.
-    const selectedDate = await dateField.inputValue();
-    const currentDate = new Date();
-    const expectedDate = `0${currentDate.getMonth() + 1}/15/${currentDate.getFullYear()}`;
-    await expect(selectedDate).toBe(expectedDate);
+  await test.step('Step 6: Switch to Animated calendar', async () => {
+    await datePickerPage.clickWithAnimation();
+    //написать тесты на верификацию анимации
+  });
+
+  await test.step('Step 7: Switch to Other months calendar', async () => {
+    await datePickerPage.clickOtherMonths();
+    await datePickerPage.clickDateField();
+
+    const beforeChange = await datePickerPage.getCurrentDate()
+
+    await datePickerPage.openDatePickerWithOtherDays()
+    await datePickerPage.selectOtherMonthDay()
+
+    await expect(await datePickerPage.getCurrentDate()).not.toBe(beforeChange)
+  });
+  
+  await test.step('Step 8: Switch to Week of Year calendar', async () => {
+    await datePickerPage.clickWeekOfYear();
+  });
+
+  await test.step('Step 9: Switch to Non-strict date range calendar', async () => {  
+    await datePickerPage.clickdateRangeNonStrict();
+    await datePickerPage.clickRangeFrom();
+    await datePickerPage.selectFirstDate('15');
+    await datePickerPage.clickRangeTo();
+    await datePickerPage.selectSecondDate('20');
 
   });
 
-  await test.step('Step 3: Identify the date picker element and pick a date of previous month', async () => {
-    const iFrame = page.frameLocator(' [class="demo-frame"] ' );
-    
-    const dateField = iFrame.locator('#datepicker');
-    await expect(dateField).toBeVisible();
-    await dateField.click();
+  await test.step('Step 10: Check emptying first Date Field after choosing date in past', async () => {
+    await datePickerPage.clickdateRangeNonStrict();
+    await datePickerPage.fillFirstDateField('04/15/2026')
+    await datePickerPage.fillSecondDateField('03/01/2026')
+    await datePickerPage.page.keyboard.press('Tab')
+    await datePickerPage.expectFirstDateFieldEmpty()
+   });
 
-    const datePicker = iFrame.locator('#ui-datepicker-div');
-    await expect(datePicker).toBeVisible();
+  await test.step('Step 11: Check selecting restricted date in restricted calendar', async () => {
+    await datePickerPage.clickDateRangeStrict()
+    await datePickerPage.clickDateField()
+    await datePickerPage.openDatePickerWithOtherDays()
+    await datePickerPage.selectOtherMonthDay()
+    await datePickerPage.expectDateFieldIsEmpry()
+  });
 
-    const previousMonthButton = datePicker.locator('.ui-datepicker-prev');
-    await previousMonthButton.click();
-
-    const dayOfPreviousMonth = datePicker.locator('a', { hasText: '15' });
-    await dayOfPreviousMonth.click();
-
-    const selectedDate = await dateField.inputValue();
-    const currentDate = new Date();
-    const expectedDate = `0${currentDate.getMonth()}/15/${currentDate.getFullYear()}`;
-    await expect(selectedDate).toBe(expectedDate);
-
+  await test.step('Step 12: Check datepicking in datepicker with dropdown menus', async () => {
+    await datePickerPage.clickDropDownMenusDatePicker()
+    await datePickerPage.clickDateField()
+    await datePickerPage.selectMonth('Mar')
+    await datePickerPage.selectYear('2024')
+    await datePickerPage.selectFirstDate('1')
+    await datePickerPage.expectDateFieldHasData('03/01/2024')
   });
 
 });

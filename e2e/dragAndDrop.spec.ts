@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('Check drag and drop functionality', async ({ page }) => {
+test('Check drag and drop functionality @jqueryui', async ({ page }) => {
   
   await test.step('Step 1: Go to droppable ui webpage', async () => {
     await page.goto('https://jqueryui.com/droppable/');
