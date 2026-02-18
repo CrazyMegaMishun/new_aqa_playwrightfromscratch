@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { MainPage } from '../lambdaTestPages/mainPage';
-import { ProductPage } from '../lambdaTestPages/productPage'
+import { ListWithProductsPage } from '../lambdaTestPages/listWithProductsPage'
 import { ToasterNotification } from '../lambdaTestPages/toasterNotification';
 
-test('Checking invalid coupon code', async ({ page }) => {
+test('Purchase with hover @lambdatest', async ({ page }) => {
 
   const mainPage = new MainPage(page);
-  const productPage = new ProductPage(page);
+  const listWithProductsPage = new ListWithProductsPage(page);
   const toasterNotification = new ToasterNotification(page);
   const productName = 'iPod Nano';
   
@@ -21,8 +21,8 @@ test('Checking invalid coupon code', async ({ page }) => {
   });
 
   await test.step('Step 3: Select Product and add it to cart', async () => {
-    await productPage.hoverProduct(productName);
-    await productPage.addToCart(productName);
+    await listWithProductsPage.hoverProduct(productName);
+    await listWithProductsPage.addToCart(productName);
   });
 
   await test.step('Step 4: Validate Toaster Notification', async () => {

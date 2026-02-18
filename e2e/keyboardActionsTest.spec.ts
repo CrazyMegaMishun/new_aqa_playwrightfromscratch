@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('Testing Keyboard Actions', async ({ page }) => {
+test('Testing Keyboard Actions @lambdatest', async ({ page }) => {
   
   await test.step('Step 1: Navigate to lambda test mock shop', async () => {
     await page.goto('https://ecommerce-playground.lambdatest.io/');

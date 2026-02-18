@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { MainPage } from '../lambdaTestPages/mainPage';
-import { ProductPage } from '../lambdaTestPages/productPage'
+import { ListWithProductsPage } from '../lambdaTestPages/listWithProductsPage'
 import { ToasterNotification } from '../lambdaTestPages/toasterNotification';
 import { CartPage } from '../lambdaTestPages/cartPage';
 
@@ -14,10 +14,10 @@ test.afterAll(() => {
   //console.log('Finished test: InvalidTestCoupon.spec.ts');
 });
 
-test('Checking invalid coupon code', async ({ page }) => {
+test('Checking invalid coupon code @lambdatest', async ({ page }) => {
 
   const mainPage = new MainPage(page);
-  const productPage = new ProductPage(page);
+  const listWithProductsPage = new ListWithProductsPage(page);
   const toasterNotification = new ToasterNotification(page);
   const cartPage = new CartPage(page);
   const productName = 'HTC Touch HD';
@@ -28,10 +28,9 @@ test('Checking invalid coupon code', async ({ page }) => {
   });
 
   await test.step('Step 2: Select Product and add it to cart', async () => {
-    await productPage.hoverProduct(productName);
-    await productPage.addToCart(productName);
+    await listWithProductsPage.hoverProduct(productName);
+    await listWithProductsPage.addToCart(productName);
   });
-
 
   await test.step('Step 3: Navigate to Checkout Page via Toaster Notification', async () => {
     await toasterNotification.expectAddedToCartSuccessNotificationContents(productName);

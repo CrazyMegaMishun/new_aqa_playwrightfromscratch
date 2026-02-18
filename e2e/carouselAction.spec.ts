@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test';
 
 test('Testing carousel navigation', async ({ page }) => {
   
-  await test.step('Step 1: Navigate to lambda test mock shop', async () => {
+  await test.step('Step 1: Navigate to lambda test mock shop @lambdatest', async () => {
     await page.goto('https://ecommerce-playground.lambdatest.io/');
     await expect(page).toHaveURL('https://ecommerce-playground.lambdatest.io/');
   });

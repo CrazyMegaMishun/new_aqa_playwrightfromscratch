@@ -20,7 +20,7 @@ test('Validating Drop Down Mega Menu', async ({ page }) => {
         await megaMenuBtn.screenshot({ path: 'screenshots/step1-mega-menu-button.png' });
     });
 
-    await test.step('Step 2: Opening the shop itself', async () => {
+    await test.step('Step 2: Opening the shop itself @lambdatest', async () => {
         const shopLink = page.getByRole('link', { name: 'Apple', exact: true });
         await shopLink.click( {force: true} )
         await expect(page).toHaveTitle('Apple');
