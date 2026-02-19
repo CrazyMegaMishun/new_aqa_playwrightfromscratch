@@ -1,6 +1,6 @@
 import { Locator, Page, expect } from "@playwright/test";
 
-export class ProductPage {
+export class ListWithProductsPage {
     page: Page;
 
     constructor(page: Page) {
@@ -22,6 +22,11 @@ export class ProductPage {
             .locator('button[title="Add to Wish List"]');
     }
 
+    getAddToCartButton(productName: string): Locator {
+        return this.getProductCard(productName)
+            .locator('button[title="Add to Cart"]');
+    }
+
     async hoverProduct(productName: string) {
         const link = this.getProductLink(productName);
         await link.hover();
@@ -32,4 +37,11 @@ export class ProductPage {
         const btn = this.getWishListButton(productName);
         await btn.click({ force: true });
     }
+
+    async addToCart(productName: string) {
+        await this.hoverProduct(productName);
+        const btn = this.getAddToCartButton(productName);
+        await btn.click({ force: true });
+    }
+
 }

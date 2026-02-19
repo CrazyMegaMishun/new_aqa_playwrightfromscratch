@@ -11,7 +11,7 @@ test.afterAll(() => {
     //console.log('Finished test: testWrongLogin.spec.ts');
 });
 
-test('Checking Error with Wrong Credentials', async ({ page }) => {
+test('Checking Error with Wrong Credentials @lambdatest', async ({ page }) => {
     const loginPage = new LoginPage(page);
     
     await loginPage.inputCredentials('damelo_mommy', '123456'); 

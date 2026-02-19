@@ -10,7 +10,7 @@ test.afterAll(() => {
   //console.log('Finished test: imageVerify.spec.ts');
 });
 
-test('Verify image is visible on product page', async ({ page }) => {
+test('Verify image is visible on product page @lambdatest', async ({ page }) => {
     
     await test.step('Step 1: Hover the Mega Menu button', async () => {
         const megaMenuBtn = page.getByRole('button', { name: 'Mega Menu' });
