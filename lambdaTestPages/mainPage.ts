@@ -14,7 +14,7 @@ export class MainPage {
     }
 
     async clickCategoryButton (btnName: string){
-        await this.page.getByRole('link', { name: btnName }).click();
+        await this.page.getByRole('link', { name: btnName, exact: true }).click();
     }
 
     async hoverMegaMenuBtn () {
@@ -24,7 +24,6 @@ export class MainPage {
     async clickCategoriesMenu() {
         await this.categoryBurgerBtn.click();
     }
-
     
     async selectCategoryInNavBar(categoryName: string) {
         await this.navBar.getByRole('link', { name: categoryName}).click({ force: true });

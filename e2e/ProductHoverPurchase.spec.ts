@@ -28,5 +28,5 @@ test('Purchase with hover @lambdatest', async ({ page }) => {
   await test.step('Step 4: Validate Toaster Notification', async () => {
     await toasterNotification.expectAddedToCartSuccessNotificationContents(productName);
   });
-  
+
 });

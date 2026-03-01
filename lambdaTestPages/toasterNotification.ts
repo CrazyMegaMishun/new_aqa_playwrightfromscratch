@@ -1,19 +1,19 @@
 import { Locator, Page, expect } from "@playwright/test";
 
 export class ToasterNotification {
-    notificationBox: Locator;
-    loginBtn: Locator;
-    registerBtn: Locator;
-    viewCartBtn: Locator;
-    checkoutBtn: Locator;
-    loginLink: Locator;
-    wishListLink: Locator;
-    registerLink: Locator;
-    shoppingCartLink: Locator;
-    closeBtn: Locator;
-    productIcon: Locator;
-    addingToWishlistWithoutLoginNotificationText: Locator;
-    addedToCartSuccessNotificationText: Locator;
+    readonly notificationBox: Locator;
+    readonly loginBtn: Locator;
+    readonly registerBtn: Locator;
+    readonly viewCartBtn: Locator;
+    readonly checkoutBtn: Locator;
+    readonly loginLink: Locator;
+    readonly wishListLink: Locator;
+    readonly registerLink: Locator;
+    readonly shoppingCartLink: Locator;
+    readonly closeBtn: Locator;
+    readonly productIcon: Locator;
+    readonly addingToWishlistWithoutLoginNotificationText: Locator;
+    readonly addedToCartSuccessNotificationText: Locator;
     page: Page;
 
     constructor(page: Page) {
@@ -32,11 +32,7 @@ export class ToasterNotification {
         this.addingToWishlistWithoutLoginNotificationText = this.notificationBox.getByText('You must login or create an');
         this.addedToCartSuccessNotificationText = this.notificationBox.getByText('Success: You have added');
     }
-
-    escapeRegExp(string: string) {
-        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    }
-
+    
     async closeNotification(){
         await this.closeBtn.click()
     }

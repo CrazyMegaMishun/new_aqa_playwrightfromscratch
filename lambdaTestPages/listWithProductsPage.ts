@@ -1,10 +1,30 @@
 import { Locator, Page, expect } from "@playwright/test";
 
 export class ListWithProductsPage {
+    readonly dropDownSortMenu: Locator
+    readonly dropDownShowItemsMenu: Locator    
     page: Page;
 
     constructor(page: Page) {
         this.page = page;
+        this.dropDownSortMenu = this.page.locator('#input-sort-212434');
+        this.dropDownShowItemsMenu = this.page.locator('#input-limit-212433');
+    }
+
+    async selectSorting(optionText: string) {
+        await this.dropDownSortMenu.selectOption(optionText);
+    }
+
+    async verifySorting(optionText: string) {
+        await expect(this.dropDownSortMenu.locator('option:checked')).toHaveText(optionText);
+    }
+
+    async selectShowing(optionText: string) {
+        await this.dropDownShowItemsMenu.selectOption(optionText);
+    }
+
+    async verifyShowing(optionText: string) {
+        await expect(this.dropDownShowItemsMenu.locator('option:checked')).toHaveText(optionText);
     }
 
     getProductLink(productName: string): Locator {
