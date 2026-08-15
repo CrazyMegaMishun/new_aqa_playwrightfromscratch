@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { defineConfig, devices } from '@playwright/test';
 
 /**
@@ -12,7 +13,8 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './e2e',
+  //testDir: './e2e',
+  testDir: './platipus/e2e',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -35,12 +37,15 @@ export default defineConfig({
     },
     screenshot: 'only-on-failure',
   },
+  /* Define Timeout */
+  timeout: 250000,
 
   /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      testMatch: /.*\.desktop\.spec\.ts/,
     },
 
     // {
@@ -54,12 +59,13 @@ export default defineConfig({
     // },
 
     /* Test against mobile viewports. */
+    {
+       name: 'mobile_chrome',
+       use: { ...devices['Pixel 5'] },
+       testMatch: /.*\.mobile\.spec\.ts/,
+    },
     // {
-    //    name: 'Mobile Chrome',
-    //    use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
+    //   name: 'mobile_safari',
     //   use: { ...devices['iPhone 12'] },
     // },
 
